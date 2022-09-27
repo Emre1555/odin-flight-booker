@@ -1,0 +1,46 @@
+<div class="mx-auto md:w-2/3 w-full flex">
+  <div class="mx-auto">
+    <% if notice.present? %>
+      <p class="py-2 px-3 bg-green-50 mb-5 text-green-500 font-medium rounded-lg inline-block" id="notice"><%= notice %></p>
+    <% end %>
+
+    <h1 class="text-3xl my-5"> Your Booking </h1>
+    <div class="py-5">
+      <div class="flex flex-row ml-2 mb-1">
+        <p>Flight Id: </p><%= @flight.id %>
+      </div>
+
+      <div class="ml-2">
+        <p>
+          <%= @flight.departure_airport.name%> -
+          <%= @flight.arrival_airport.name%>
+          <%= @flight.date.strftime("%m/%d/%Y") %>
+          <%= @flight.time.strftime("%I:%M %P") %>
+        </p>
+      </div>
+    </div>
+    
+
+    <div>
+    <% i =1 %>
+    <% @booking.passengers.each do |p| %>
+      <div class="flex flex-col p-4 m-4 bg-slate-50 rounded-xl">
+        <div class="font-bold text-xl mb-2 ">
+          <%= "Passenger #{i}"%>
+        </div>
+        <div class="mb-3">
+          <p>Name:</p> <%= p.name %>
+        </div>
+        <div>
+          <p>Email:</p> <%= p.email %>  
+        </div>
+      </div>
+      <% i+= 1%>
+    <% end %>
+    
+    </div>
+    
+   <%= button_to "Book Another Flight", root_path, method: :get, class: "bg-blue-500 hover:bg-blue-400 text-white font-bold py-2 px-4 rounded m-3"%>
+
+  </div>
+</div>

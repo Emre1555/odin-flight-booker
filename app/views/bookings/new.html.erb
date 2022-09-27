@@ -1,0 +1,42 @@
+<div class="mx-auto md:w-2/3 w-full bg-slate-50 px-12 py-16 rounded-2xl">
+  <h1 class="font-bold text-3xl my-5">New Booking</h1> 
+
+  <div class="py-5">
+      <div class="flex flex-row ml-2 mb-1 text-xl">
+        <p>Flight Id: </p><%= @selected_flight.id %>
+      </div>
+      <div class="ml-2 text-xl">
+        <p>
+          <%= @selected_flight.departure_airport.name%> -
+          <%= @selected_flight.arrival_airport.name%>
+          <%= @selected_flight.date.strftime("%m/%d/%Y") %>
+          <%= @selected_flight.time.strftime("%I:%M %P") %>
+        </p>
+      </div>
+  </div>
+
+  <%# Add fields for each passenger infos %>
+
+  <div>
+
+    <%= form_for @booking do |b| %>  
+      <%= b.hidden_field 'flight_id', value: @selected_flight.id %>
+      <% i=1 %>
+        <%= b.fields_for :passengers do |p|%>
+          <div class="font-bold -mb-2 ">
+            <%= "Passenger #{i}"%>
+          </div>
+            <div class="flex flex-row p-2 my-4 bg-slate-50 rounded-xl">
+              <div class="m-3">
+                <%= p.text_field :name, placeholder: "Passenger's Name" %>
+              </div>
+              <div class="m-3">
+                <%= p.text_field :email, placeholder:"Passenger's Email" %>   
+              </div>
+            </div>
+            <% i += 1%>
+          
+      <% end %>
+      <%= b.submit "Book Flight", class: "bg-blue-500 hover:bg-blue-400 text-white font-bold py-2 px-4 my-4 rounded cursor-pointer" %>
+    <% end %>
+  </div>

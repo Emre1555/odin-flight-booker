@@ -1,0 +1,42 @@
+<div class="bg-slate-50 rounded-2xl py-12 px-16 ">
+  <h1 class="font-bold text-4xl py-6">Flight Booker</h1>
+
+  <%= form_with url:"/flights", method: :get do |f| %>
+    <%= f.label :departure_airport_id, "From:" %>
+    <%= select_tag(:departure_airport_id , options_for_select(@airport_options)) %>
+    <%= f.label :arrival_airport_id, "To:", class:"ml-3" %>
+    <%= select_tag(:arrival_airport_id , options_for_select(@airport_options, @airport_options.second)) %>
+    <%= f.label :date, "Date:", class:"ml-3"  %>
+    <%= f.date_field 'date', selected: Date.today, min: 5.days.ago, max: 1.year.from_now, required: true%>
+    <%= f.label :passenger_number, "Number of Passengers:", class:"ml-3" %>
+    <%= f.number_field :passenger_number, max:4, min:1, value:1 %>
+    <%= f.submit "Search", class: "bg-blue-500 hover:bg-blue-400 text-white font-bold text-xl py-2 px-4 rounded m-3 cursor-pointer mx-6" %>
+  <% end %>
+
+
+
+
+  <%# list available flights here if there is any %>
+
+  <% if @flights.any? %>
+    <div class="py-12">
+      <%= form_with url:new_booking_path , method: :get do |f| %>
+      <%= f.hidden_field :passenger_number, value: params[:passenger_number]%>
+      <% @flights.each do |flight| %>
+        <div class="py-4">
+         <%= f.radio_button :flight, flight.id%>
+         <%= f.label ("flight_"+flight.id.to_s), "#{flight.departure_airport.name} - #{flight.arrival_airport.name} #{flight.date.to_date.strftime("%m/%d/%Y")} #{flight.time.time.strftime("%I:%M %P")}" %> <br>
+        </div>
+      <% end %>
+      <%= f.submit "Proceed", class: "bg-blue-500 hover:bg-blue-400 text-white font-bold text-xl py-2 px-4 rounded my-3 cursor-pointer"%>
+    <% end %>
+    </div>
+   <% elsif params[:arrival_airport_id] && params[:arrival_airport_id] == params[:departure_airport_id] %>
+     <p class="text-red-500 mt-4 text-xl">Please select different airports</p>
+   <% elsif params[:arrival_airport_id] %>
+      <p class="text-red-500 mt-4 text-xl">No flights available</p>
+  <% end %>
+
+  
+</div>
+
