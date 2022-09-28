@@ -1,1 +1,1 @@
-web: rails db:migrate && rails s -p '0.0.0.0:$PORT' 
+web: bundle exec rails s -p $PORT -b 
